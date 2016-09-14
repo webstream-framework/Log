@@ -1,20 +1,27 @@
 <?php
-namespace WebStream\IO\Test;
+namespace WebStream\Log\Test;
 
 require_once dirname(__FILE__) . '/../Logger.php';
 require_once dirname(__FILE__) . '/../LoggerAdapter.php';
 require_once dirname(__FILE__) . '/../LoggerConfigurationManager.php';
+require_once dirname(__FILE__) . '/../Outputter/IOutputter.php';
+require_once dirname(__FILE__) . '/../Outputter/ILazyWriter.php';
+require_once dirname(__FILE__) . '/../Outputter/FileOutputter.php';
 require_once dirname(__FILE__) . '/../Outputter/ConsoleOutputter.php';
 
-require_once dirname(__FILE__) . '/../Test/Modules/Injector.php';
-require_once dirname(__FILE__) . '/../Test/Modules/Container.php';
-require_once dirname(__FILE__) . '/../Test/Modules/ValueProxy.php';
+require_once dirname(__FILE__) . '/../Modules/Container/Container.php';
+require_once dirname(__FILE__) . '/../Modules/Container/ValueProxy.php';
+
+require_once dirname(__FILE__) . '/Providers/LoggerProvider.php';
+
 
 use WebStream\Log\Logger;
 use WebStream\Log\LoggerAdapter;
 use WebStream\Log\LoggerConfigurationManager;
 use WebStream\Log\Outputter\ConsoleOutputter;
 use WebStream\Container\Container;
+
+use WebStream\Log\Test\Providers\LoggerProvider;
 
 /**
  * LoggerTest
@@ -23,15 +30,26 @@ use WebStream\Container\Container;
  */
 class LoggerTest extends \PHPUnit_Framework_TestCase
 {
-    private function getLogger(Container $config)
+    use LoggerProvider;
+
+    private function getLogger(string $logPath)
     {
-        $config->logPath = "";
-        $config->statusPath = "";
-        Logger::init($config);
+        Logger::init($logPath);
         $instance = Logger::getInstance();
-        $instance->setOutputter([new ConsoleOutputter()]);
+        $instance->setOutputter([new FileOutputter, new ConsoleOutputter()]);
 
         return new LoggerAdapter($instance);
+    }
+
+    private function assertLog($level, $msg, $logLine)
+    {
+        if (preg_match('/^\[\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\..{3}\]\[(.+?)\]\s(.*)$/', $logLine, $matches)) {
+            $target = [$level, $msg];
+            $result = [trim($matches[1]), $matches[2]];
+            $this->assertEquals($target, $result);
+        } else {
+            $this->assertTrue(false);
+        }
     }
 
     /**
@@ -43,10 +61,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     public function okLoggerAdapter($level)
     {
         $msg = "log message";
-        $config = new Container(false);
-        $config->logPath = "";
-        $config->logLevel = $this->toLogLevelValue($level);
-        $config->format = "[%d{%Y-%m-%d %H:%M:%S.%f}][%5L] %m";
+        $logPath = dirname(__FILE__) . "/Fixtures/log.test1.${level}.ini";
         $logger = $this->getLogger($config);
 
         ob_start();
