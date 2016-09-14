@@ -2,7 +2,6 @@
 namespace WebStream\Log;
 
 use WebStream\Container\Container;
-use WebStream\Module\Utility\LoggerUtils;
 
 /**
  * LoggerFormatterクラス
