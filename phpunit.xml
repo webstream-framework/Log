@@ -11,6 +11,9 @@
       <exclude>
         <directory>vendor</directory>
         <directory>Test</directory>
+        <directory>Modules</directory>
+        <file>Outputter/ILazyWriter.php</file>
+        <file>Outputter/IOutputter.php</file>
       </exclude>
     </whitelist>
   </filter>

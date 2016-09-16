@@ -16,7 +16,7 @@ use WebStream\Exception\Extend\LoggerException;
  */
 class Logger
 {
-    // use LoggerUtils;
+    use LoggerUtils;
 
     /**
      * @var Logger ロガー
