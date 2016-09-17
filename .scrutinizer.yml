@@ -4,8 +4,6 @@ filter:
     excluded_paths:
         - 'Test/*'
         - 'Modules/*'
-        - 'Outputter/ILazyWriter.php'
-        - 'Outputter/IOutputter.php'
 tools:
     external_code_coverage:
         timeout: 2400
@@ -18,8 +16,6 @@ tools:
             excluded_paths:
                 - 'Test/*'
                 - 'Modules/*'
-                - 'Outputter/ILazyWriter.php'
-                - 'Outputter/IOutputter.php'
     php_cpd:
         excluded_dirs:
             - Test
@@ -30,8 +26,6 @@ tools:
             excluded_paths:
                 - 'Test/*'
                 - 'Modules/*'
-                - 'Outputter/ILazyWriter.php'
-                - 'Outputter/IOutputter.php'
     php_mess_detector:
         config:
             rulesets:
@@ -45,5 +39,3 @@ tools:
             excluded_paths:
                 - 'Test/*'
                 - 'Modules/*'
-                - 'Outputter/ILazyWriter.php'
-                - 'Outputter/IOutputter.php'
