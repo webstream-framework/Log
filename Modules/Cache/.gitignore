@@ -3,3 +3,4 @@ vendor
 composer.lock
 sandbox
 Rakefile
+unittest.sh

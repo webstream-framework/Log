@@ -4,6 +4,7 @@ filter:
     excluded_paths:
         - 'Test/*'
         - 'Modules/*'
+        - 'Driver/CacheDriverFactory.php'
 tools:
     external_code_coverage:
         timeout: 2400
@@ -16,6 +17,7 @@ tools:
             excluded_paths:
                 - 'Test/*'
                 - 'Modules/*'
+                - 'Driver/CacheDriverFactory.php'
     php_cpd:
         excluded_dirs:
             - Test
@@ -26,6 +28,7 @@ tools:
             excluded_paths:
                 - 'Test/*'
                 - 'Modules/*'
+                - 'Driver/CacheDriverFactory.php'
     php_mess_detector:
         config:
             rulesets:
@@ -39,3 +42,4 @@ tools:
             excluded_paths:
                 - 'Test/*'
                 - 'Modules/*'
+                - 'Driver/CacheDriverFactory.php'
