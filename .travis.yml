@@ -24,7 +24,7 @@ before_script:
   - mkdir -p build/logs
 
 script:
-  - if [[ $VERSION = 'latest' ]]; then docker run -v /home/travis/build/webstream-framework/Log:/workspace/ webstream/php-cli phpdbg -qrr vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.clover; fi
+  - if [[ $VERSION = 'latest' ]]; then docker run -v /home/travis/build/webstream-framework/Log:/workspace/ webstream/php-cli vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.clover; fi
   - if [[ $VERSION != 'latest' ]]; then docker run -v /home/travis/build/webstream-framework/Log:/workspace/ webstream/php-cli vendor/bin/phpunit; fi
 
 after_script:
