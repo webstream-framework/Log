@@ -14,7 +14,7 @@ matrix:
   fast_finish: true
   include:
     - php: 7.1
-      env: VERSION=latest
+      env: VERSION=7.1
     - php: 7.0
       env: VERSION=7.0
 
@@ -24,9 +24,9 @@ before_script:
   - mkdir -p build/logs
 
 script:
-  - if [[ $VERSION = 'latest' ]]; then docker run -v /home/travis/build/webstream-framework/Log:/workspace/ webstream/php-cli vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.clover; fi
-  - if [[ $VERSION != 'latest' ]]; then docker run -v /home/travis/build/webstream-framework/Log:/workspace/ webstream/php-cli vendor/bin/phpunit; fi
+  - if [[ $VERSION > 7.0 ]]; then docker run -v /home/travis/build/webstream-framework/Log:/workspace/ --rm webstream/php-cli:$VERSION vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.clover;
+    else docker run -v /home/travis/build/webstream-framework/Log:/workspace/ --rm webstream/php-cli:$VERSION vendor/bin/phpunit; fi
 
 after_script:
-  - if [[ $VERSION = 'latest' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ $VERSION = 'latest' ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
+  - if [[ $VERSION = 7.1 ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ $VERSION = 7.1 ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
