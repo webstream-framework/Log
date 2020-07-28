@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Log;
 
 use WebStream\Container\Container;

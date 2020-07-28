@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Log\Outputter;
 
 /**
@@ -12,7 +13,7 @@ class ConsoleOutputter implements IOutputter, ILazyWriter
     /**
      * https://github.com/php/php-src/tree/master/sapi
      * PHP7以前のものは対応しない
-     * @var SAPIリスト
+     * @var array
      */
     private $sapis = [
         'apache2handler' => 'http',

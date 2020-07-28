@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Log;
 
 use WebStream\Cache\Driver\ICache;
@@ -41,7 +42,7 @@ class LoggerCache
      */
     public function __destruct()
     {
-        $this->driver->clear();
+        $this->clear();
     }
 
     /**
@@ -74,5 +75,13 @@ class LoggerCache
     public function length()
     {
         return $this->index;
+    }
+
+    /**
+     * キャッシュクリア
+     */
+    public function clear()
+    {
+        $this->driver->clear();
     }
 }

@@ -1,10 +1,12 @@
 <?php
+
 namespace WebStream\Log;
 
 use WebStream\IO\File;
 use WebStream\IO\Writer\SimpleFileWriter;
 use WebStream\Container\Container;
 use WebStream\Exception\Extend\LoggerException;
+use WebStream\Log\LoggerUtils;
 
 /**
  * LoggerConfigurationManager
@@ -14,6 +16,8 @@ use WebStream\Exception\Extend\LoggerException;
  */
 class LoggerConfigurationManager
 {
+    use LoggerUtils;
+
     /**
      * @var Container ログ設定コンテナ
      */

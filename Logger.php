@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Log;
 
 use WebStream\IO\File;
@@ -121,7 +122,7 @@ class Logger
 
     /**
      * インスタンスを返却する
-     * @return WebStream\Module\Logger ロガーインスタンス
+     * @return Logger ロガーインスタンス
      */
     public static function getInstance()
     {
@@ -344,7 +345,7 @@ class Logger
         $now = intval(preg_replace('/^.*\s/', '', microtime()));
         $createdAt = $this->readStatus();
 
-        $sizeKb = (int) floor($this->logFile->size() / 1024);
+        $sizeKb = (int) floor($this->logFile->length() / 1024);
         // 指定したサイズより大きければローテート
         if ($sizeKb >= $this->logConfig->rotateSize) {
             $this->runRotate($createdAt, $now);
