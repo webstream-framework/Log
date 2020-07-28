@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . '/../Outputter/IOutputter.php';
 require_once dirname(__FILE__) . '/../Outputter/ILazyWriter.php';
 require_once dirname(__FILE__) . '/../Outputter/FileOutputter.php';
 require_once dirname(__FILE__) . '/../Outputter/ConsoleOutputter.php';
-require_once dirname(__FILE__) . '/../Modules/Cache/Modules/DI/Injector.php';
+require_once dirname(__FILE__) . '/../Modules/DI/Injector.php';
 require_once dirname(__FILE__) . '/../Modules/Cache/Driver/CacheDriverFactory.php';
 require_once dirname(__FILE__) . '/../Modules/Cache/Driver/ICache.php';
 require_once dirname(__FILE__) . '/../Modules/Cache/Driver/Apcu.php';
