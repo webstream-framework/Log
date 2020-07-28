@@ -1,0 +1,35 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - uses: nanasess/setup-php@master
+      with:
+        php-version: '7.4'
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+    - name: Install dependencies
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Run test suite and calculate coverage
+      run: phpdbg -qrr vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.clover
+    - name: Prepare send coverage
+      run: wget https://scrutinizer-ci.com/ocular.phar
+    - name: Send coverage report to scrutinizer
+      run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
