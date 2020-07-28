@@ -1,0 +1,15 @@
+version: '3'
+services:
+  webstream-framework-log:
+    build: ./
+    image: webstream-framework/log
+    container_name: webstream-framework-log
+    volumes:
+        - ./:/workspace
+    working_dir: /workspace
+    tty: true
+    networks:
+      - webstream_framework
+networks:
+  webstream_framework:
+    external: true
