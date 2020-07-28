@@ -19,7 +19,10 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.7'
-    - run: rake -V
+    - name: Create docker container
+      run: rake create_dev
+    - name: check
+      run: docker ps
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v2
