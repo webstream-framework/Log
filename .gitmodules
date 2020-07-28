@@ -1,0 +1,16 @@
+[submodule "Modules/Exception"]
+	path = Modules/Exception
+	url = git@github.com:webstream-framework/Exception.git
+	branch = master
+[submodule "Modules/Cache"]
+	path = Modules/Cache
+	url = git@github.com:webstream-framework/Cache.git
+	branch = master
+[submodule "Modules/IO"]
+	path = Modules/IO
+	url = git@github.com:webstream-framework/IO.git
+	branch = master
+[submodule "Modules/Container"]
+	path = Modules/Container
+	url = git@github.com:webstream-framework/Container.git
+	branch = master
