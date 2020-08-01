@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Exception\Extend;
 
 /**

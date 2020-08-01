@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Log\Outputter;
 
 use WebStream\Cache\Driver\ICache;
@@ -53,7 +54,12 @@ class FileOutputter implements IOutputter, ILazyWriter
         $driver = $factory->create("WebStream\Cache\Driver\Apcu", $config);
 
         // LoggerCacheの中ではログは取らない
-        $driver->inject('logger', new class() { function __call($name, $args) {} });
+        $driver->inject('logger', new class ()
+        {
+            public function __call($name, $args)
+            {
+            }
+        });
         $this->driver = $driver;
         $this->bufferSize = $bufferSize;
         $this->enableLazyWrite();
@@ -106,7 +112,7 @@ class FileOutputter implements IOutputter, ILazyWriter
         if ($this->isLazyWrite) {
             if ($this->cache->length() >= $this->bufferSize) {
                 $this->flush();
-                $this->clear();
+                $this->cache->clear();
             }
             $this->cache->add($message);
         } else {

@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Log\Test\Providers;
 
 /**
@@ -220,8 +221,8 @@ trait LoggerProvider
     public function writeTimingProvider()
     {
         return [
-            [true, "b", "a", "a", "a".PHP_EOL."b".PHP_EOL."a".PHP_EOL],
-            [false,"b", "a", "a", "b".PHP_EOL."a".PHP_EOL."a".PHP_EOL]
+            [true, "b", "a", "a", "a" . PHP_EOL . "b" . PHP_EOL . "a" . PHP_EOL],
+            [false,"b", "a", "a", "b" . PHP_EOL . "a" . PHP_EOL . "a" . PHP_EOL]
         ];
     }
 

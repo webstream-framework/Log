@@ -11,12 +11,10 @@
       <exclude>
         <directory>./Test</directory>
         <directory>./Modules</directory>
+        <directory>./vendor</directory>
         <file>Outputter/ILazyWriter.php</file>
         <file>Outputter/IOutputter.php</file>
       </exclude>
     </whitelist>
   </filter>
-  <logging>
-    <log type="coverage-clover" target="build/logs/clover.xml"/>
-  </logging>
 </phpunit>

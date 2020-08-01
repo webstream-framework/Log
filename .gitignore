@@ -2,11 +2,3 @@
 vendor
 composer.lock
 sandbox
-Rakefile
-
-Modules/**/*.yml
-Modules/**/composer.json
-Modules/**/phpunit.xml
-Modules/**/README.md
-Modules/**/.gitignore
-Modules/**/Test/*

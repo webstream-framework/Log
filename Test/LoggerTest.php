@@ -1,4 +1,5 @@
 <?php
+
 namespace WebStream\Log\Test;
 
 require_once dirname(__FILE__) . '/../LoggerUtils.php';
@@ -11,7 +12,7 @@ require_once dirname(__FILE__) . '/../Outputter/IOutputter.php';
 require_once dirname(__FILE__) . '/../Outputter/ILazyWriter.php';
 require_once dirname(__FILE__) . '/../Outputter/FileOutputter.php';
 require_once dirname(__FILE__) . '/../Outputter/ConsoleOutputter.php';
-require_once dirname(__FILE__) . '/../Modules/Cache/Modules/DI/Injector.php';
+require_once dirname(__FILE__) . '/../Modules/DI/Injector.php';
 require_once dirname(__FILE__) . '/../Modules/Cache/Driver/CacheDriverFactory.php';
 require_once dirname(__FILE__) . '/../Modules/Cache/Driver/ICache.php';
 require_once dirname(__FILE__) . '/../Modules/Cache/Driver/Apcu.php';
@@ -434,7 +435,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $writer->close();
         $logger->info($message);
 
-        $this->assertFileNotExists("/tmp/webstream.logtest.${createdAtDate}-${nowDate}.log");
+        $this->assertFileDoesNotExist("/tmp/webstream.logtest.${createdAtDate}-${nowDate}.log");
     }
 
     /**
@@ -481,7 +482,12 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $config->cacheDir = "/tmp";
         $factory = new CacheDriverFactory();
         $driver = $factory->create("WebStream\Cache\Driver\Apcu", $config);
-        $logger = new class() { function __call($name, $args) {} };
+        $logger = new class ()
+        {
+            function __call($name, $args)
+            {
+            }
+        };
         $driver->inject('logger', $logger);
         $driver->clear();
 
