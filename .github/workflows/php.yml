@@ -16,13 +16,6 @@ jobs:
     - uses: nanasess/setup-php@master
       with:
         php-version: '7.4'
-    - uses: actions/setup-ruby@v1
-      with:
-        ruby-version: '2.7'
-    - name: Create docker container
-      run: rake create_dev
-    - name: check
-      run: docker ps
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v2
@@ -35,7 +28,7 @@ jobs:
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress --no-suggest
     - name: Run test suite and calculate coverage
-      run: phpdbg -qrr vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.clover
+      run: vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.clover
     - name: Prepare send coverage
       run: wget https://scrutinizer-ci.com/ocular.phar
     - name: Send coverage report to scrutinizer
