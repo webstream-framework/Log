@@ -101,7 +101,7 @@ class FileOutputter implements IOutputter, ILazyWriter
         }
 
         $this->isLazyWrite = false;
-        $this->cache = null;
+        unset($this->cache);
     }
 
     /**
