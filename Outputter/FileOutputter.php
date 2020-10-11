@@ -19,27 +19,27 @@ class FileOutputter implements IOutputter, ILazyWriter
     /**
      * @var ICache キャッシュドライバ
      */
-    private $driver;
+    private ICache $driver;
 
     /**
      * @var int バッファリングサイズ
      */
-    private $bufferSize;
+    private int $bufferSize;
 
     /**
      * @var bool 遅延書き出しフラグ
      */
-    private $isLazyWrite;
+    private bool $isLazyWrite;
 
     /**
      * @var SimpleFileWriter Writerオブジェクト
      */
-    private $writer;
+    private SimpleFileWriter $writer;
 
     /**
      * @var LoggerCache ログキャッシュ
      */
-    private $cache;
+    private LoggerCache $cache;
 
     /**
      * constructor
@@ -101,13 +101,13 @@ class FileOutputter implements IOutputter, ILazyWriter
         }
 
         $this->isLazyWrite = false;
-        $this->cache = null;
+        unset($this->cache);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write($message)
+    public function write(string $message)
     {
         if ($this->isLazyWrite) {
             if ($this->cache->length() >= $this->bufferSize) {
@@ -134,7 +134,7 @@ class FileOutputter implements IOutputter, ILazyWriter
      * ログファイルに書き出す
      * @param string $message ログメッセージ
      */
-    private function writeLog($message)
+    private function writeLog(string $message)
     {
         $this->writer->write($message);
     }

@@ -15,7 +15,7 @@ class LoggerCache
     /**
      * @var ICache キャッシュドライバ
      */
-    private $driver;
+    private ICache $driver;
 
     /**
      * @var string キャッシュキー
@@ -25,10 +25,11 @@ class LoggerCache
     /**
      * @var int キャッシュインデックス
      */
-    private $index;
+    private int $index;
 
     /**
      * constructor
+     * @param ICache $driver キャッシュドライバ
      */
     public function __construct(ICache $driver)
     {

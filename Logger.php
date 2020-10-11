@@ -8,6 +8,8 @@ use WebStream\IO\Writer\SimpleFileWriter;
 use WebStream\Container\Container;
 use WebStream\Exception\Extend\IOException;
 use WebStream\Exception\Extend\LoggerException;
+use WebStream\Log\Outputter\ILazyWriter;
+use WebStream\Log\Outputter\IOutputter;
 
 /**
  * Loggerクラス
@@ -22,42 +24,42 @@ class Logger
     /**
      * @var Logger ロガー
      */
-    private static $logger;
+    private static Logger $logger;
 
     /**
      * @var LoggerFormatter ロガーフォーマッタ
      */
-    private static $formatter;
+    private static LoggerFormatter $formatter;
 
     /**
      * @var Container ログ設定コンテナ
      */
-    private static $config;
+    private static Container $config;
 
     /**
      * @var Container ログ設定コンテナ
      */
-    private $logConfig;
+    private Container $logConfig;
 
     /**
      * @var array<IOutputter> Outputterリスト
      */
-    private $outputters;
+    private array $outputters;
 
     /**
      * @var Container IOコンテナ
      */
-    private $ioContainer;
+    private Container $ioContainer;
 
     /**
      * @var File ログファイル
      */
-    private $logFile;
+    private File $logFile;
 
     /**
      * @var File ステータスファイル
      */
-    private $statusFile;
+    private File $statusFile;
 
     /**
      * コンストラクタ
@@ -141,7 +143,7 @@ class Logger
 
     /**
      * Loggerを初期化する
-     * @param Container ログ設定コンテナ
+     * @param Container $config
      */
     public static function init(Container $config)
     {
@@ -152,7 +154,7 @@ class Logger
 
     /**
      * Loggerが初期化済みかどうかチェックする
-     * @param bool 初期化済みならtrue
+     * @return bool 初期化済みならtrue
      */
     public static function isInitialized()
     {
@@ -184,7 +186,7 @@ class Logger
     public function setOutputter(array $outputters)
     {
         foreach ($outputters as $outputter) {
-            if (!$outputter instanceof \WebStream\Log\Outputter\IOutputter) {
+            if (!$outputter instanceof IOutputter) {
                 throw new LoggerException("Log outputter must implement WebStream\Log\Outputter\IOutputter.");
             }
         }
@@ -302,8 +304,8 @@ class Logger
 
     /**
      * ローテートを実行する
-     * @param integer 作成日時のUnixTime
-     * @param integer 現在日時のUnixTime
+     * @param int 作成日時のUnixTime
+     * @param int 現在日時のUnixTime
      */
     private function runRotate($from, $to)
     {
@@ -385,7 +387,7 @@ class Logger
     public function lazyWrite()
     {
         foreach ($this->outputters as $outputter) {
-            if ($outputter instanceof \WebStream\Log\Outputter\ILazyWriter) {
+            if ($outputter instanceof ILazyWriter) {
                 $outputter->enableLazyWrite();
             }
         }
@@ -397,7 +399,7 @@ class Logger
     public function directWrite()
     {
         foreach ($this->outputters as $outputter) {
-            if ($outputter instanceof \WebStream\Log\Outputter\ILazyWriter) {
+            if ($outputter instanceof ILazyWriter) {
                 $outputter->enableDirectWrite();
             }
         }

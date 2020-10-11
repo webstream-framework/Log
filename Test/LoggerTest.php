@@ -31,6 +31,7 @@ require_once dirname(__FILE__) . '/../Modules/IO/Writer/SimpleFileWriter.php';
 require_once dirname(__FILE__) . '/Modules/IOException.php';
 require_once dirname(__FILE__) . '/Providers/LoggerProvider.php';
 
+use PHPUnit\Framework\TestCase;
 use WebStream\Container\Container;
 use WebStream\Cache\Driver\CacheDriverFactory;
 use WebStream\IO\File;
@@ -48,11 +49,11 @@ use WebStream\Log\Test\Providers\LoggerProvider;
  * @author Ryuichi TANAKA.
  * @since 2016/01/30
  */
-class LoggerTest extends \PHPUnit\Framework\TestCase
+class LoggerTest extends TestCase
 {
     use LoggerProvider;
 
-    private function getLogger(string $configPath)
+    private function getLogger(string $configPath): LoggerAdapter
     {
         $manager = new LoggerConfigurationManager($configPath);
         $manager->load();
@@ -63,7 +64,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         return new LoggerAdapter($instance);
     }
 
-    private function getLotateLogger(string $configPath)
+    private function getRotateLogger(string $configPath): LoggerAdapter
     {
         $manager = new LoggerConfigurationManager($configPath);
         $manager->load();
@@ -74,7 +75,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         return new LoggerAdapter($instance);
     }
 
-    private function assertLog($level, $msg, $logLine)
+    private function assertLog($level, $msg, $logLine): void
     {
         if (preg_match('/^\[\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\..{3}\]\[(.+?)\]\[(.+?)]\s(.*)$/', $logLine, $matches)) {
             $target = ["webstream.logtest", $level, $msg];
@@ -90,8 +91,9 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * LoggerAdapter経由でログが書き込めること
      * @test
      * @dataProvider loggerAdapterProvider
+     * @param string $level ログレベル
      */
-    public function okLoggerAdapter($level)
+    public function okLoggerAdapter(string $level): void
     {
         $msg = "log message";
         $configPath = dirname(__FILE__) . "/Fixtures/log.test1.${level}.ini";
@@ -109,10 +111,13 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * LoggerAdapter経由でログが書き込めること、プレースホルダーで値を埋め込めること
      * @test
      * @dataProvider loggerAdapterWithPlaceholderProvider
+     * @param string $level ログレベル
+     * @param string $msg1 メッセージ1
+     * @param string $msg2 メッセージ2
+     * @param array $placeholder プレースホルダ
      */
-    public function okLoggerAdapterWithPlaceholder($level, $msg1, $msg2, array $placeholder)
+    public function okLoggerAdapterWithPlaceholder(string $level, string $msg1, string $msg2, array $placeholder): void
     {
-        $msg = "log message";
         $configPath = dirname(__FILE__) . "/Fixtures/log.test1.${level}.ini";
         $logger = $this->getLogger($configPath);
 
@@ -129,8 +134,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「debug」「info」「notice」「warn」「warning」「error」「critical」「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelDebugProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteDebug($level, $isWrite)
+    public function okWriteDebug(string $level, bool $isWrite): void
     {
         $execLevel = "debug";
         $msg = "log message";
@@ -150,8 +157,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「info」「notice」「warn」「warning」「error」「critical」「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelInfoProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteInfo($level, $isWrite)
+    public function okWriteInfo(string $level, bool $isWrite): void
     {
         $execLevel = "info";
         $msg = "log message";
@@ -171,8 +180,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「notice」「warn」「warning」「error」「critical」「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelNoticeProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteNotice($level, $isWrite)
+    public function okWriteNotice(string $level, bool $isWrite): void
     {
         $execLevel = "notice";
         $msg = "log message";
@@ -192,8 +203,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「warn」「warning」「error」「critical」「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelWarnProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteWarn($level, $isWrite)
+    public function okWriteWarn(string $level, bool $isWrite): void
     {
         $execLevel = "warn";
         $msg = "log message";
@@ -213,8 +226,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「warn」「warning」「error」「critical」「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelWarningProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteWarning($level, $isWrite)
+    public function okWriteWarning(string $level, bool $isWrite): void
     {
         $execLevel = "warning";
         $msg = "log message";
@@ -234,8 +249,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「error」「critical」「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelErrorProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteError($level, $isWrite)
+    public function okWriteError(string $level, bool $isWrite): void
     {
         $execLevel = "error";
         $msg = "log message";
@@ -255,8 +272,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「critical」「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelCriticalProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteCritical($level, $isWrite)
+    public function okWriteCritical(string $level, bool $isWrite): void
     {
         $execLevel = "critical";
         $msg = "log message";
@@ -276,8 +295,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「alert」「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelAlertProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteAlert($level, $isWrite)
+    public function okWriteAlert(string $level, bool $isWrite): void
     {
         $execLevel = "alert";
         $msg = "log message";
@@ -297,8 +318,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「emergency」「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelEmergencyProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteEmergency($level, $isWrite)
+    public function okWriteEmergency(string $level, bool $isWrite): void
     {
         $execLevel = "emergency";
         $msg = "log message";
@@ -318,8 +341,10 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 「fatal」レベルのログが書き出せること
      * @test
      * @dataProvider logLevelFatalProvider
+     * @param string $level ログレベル
+     * @param bool $isWrite 書き込みフラグ
      */
-    public function okWriteFatal($level, $isWrite)
+    public function okWriteFatal(string $level, bool $isWrite): void
     {
         $execLevel = "fatal";
         $msg = "log message";
@@ -338,8 +363,11 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * 指定されたフォーマットでログ出力されること
      * @test
      * @dataProvider loggerFormatterProvider
+     * @param string $configPath 設定ファイルパス
+     * @param string $msg メッセージ
+     * @param string $formattedMessage フォーマットメッセージ
      */
-    public function okLoggerFormatter($configPath, $msg, $formattedMessage)
+    public function okLoggerFormatter(string $configPath, string $msg, string $formattedMessage): void
     {
         $configPath = dirname(__FILE__) . "/Fixtures/${configPath}";
         $logger = $this->getLogger($configPath);
@@ -356,8 +384,12 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * DateTimeフォーマットでログ出力されること
      * @test
      * @dataProvider loggerFormatterDateTimeProvider
+     * @param string $configPath 設定ファイルパス
+     * @param string $dateTimeRegexp dateTime正規表現
+     * @param string $message メッセージ
+     * @param string $messageWithSpace フォーマットメッセージ
      */
-    public function okLoggerDateTimeFormatter($configPath, $dateTimeRegexp, $message, $messageWithSpace)
+    public function okLoggerDateTimeFormatter(string $configPath, string $dateTimeRegexp, string $message, string $messageWithSpace): void
     {
         $configPath = dirname(__FILE__) . "/Fixtures/${configPath}";
         $logger = $this->getLogger($configPath);
@@ -375,11 +407,15 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * ログの書き出しタイミングを制御できること
      * @test
      * @dataProvider writeTimingProvider
+     * @param bool $isLazy
+     * @param string $msg1
+     * @param string $msg2
+     * @param string $msg3
+     * @param string $result
      */
-    public function okLoggerWriteTiming($isLazy, $msg1, $msg2, $msg3, $result)
+    public function okLoggerWriteTiming(bool $isLazy, string $msg1, string $msg2, string $msg3, string $result)
     {
         $configPath = dirname(__FILE__) . "/Fixtures/log.test5.ini";
-        $logger = $this->getLogger($configPath);
         $manager = new LoggerConfigurationManager($configPath);
         $manager->load();
         Logger::init($manager->getConfig());
@@ -416,12 +452,14 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * ログローテートは実行されないこと
      * @test
      * @dataProvider unRotateByCycleProvider
+     * @param string $configPath
+     * @param int $hour
      */
-    public function okUnRotateByCycle($configPath, $hour)
+    public function okUnRotateByCycle(string $configPath, int $hour): void
     {
         $message = "hoge";
         $configPath = dirname(__FILE__) . "/Fixtures/${configPath}";
-        $logger = $this->getLotateLogger($configPath);
+        $logger = $this->getRotateLogger($configPath);
 
         // 現在時刻より$hour時間前のUnixTimeを取得
         $now = intval(preg_replace('/^.*\s/', '', microtime()));
@@ -448,12 +486,14 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * ログローテートが実行されること
      * @test
      * @dataProvider rotateByCycleProvider
+     * @param string $configPath
+     * @param int $hour
      */
-    public function okRotateByCycle($configPath, $hour)
+    public function okRotateByCycle(string $configPath, int $hour)
     {
         $message = "hoge";
         $configPath = dirname(__FILE__) . "/Fixtures/${configPath}";
-        $logger = $this->getLotateLogger($configPath);
+        $logger = $this->getRotateLogger($configPath);
 
         // 現在時刻より$hour時間前のUnixTimeを取得
         $now = intval(preg_replace('/^.*\s/', '', microtime()));
@@ -475,7 +515,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * ログキャッシュできること
      * @test
      */
-    public function okLoggerCache()
+    public function okLoggerCache(): void
     {
         $config = new Container(false);
         $config->classPrefix = "logger_cache";
@@ -484,7 +524,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $driver = $factory->create("WebStream\Cache\Driver\Apcu", $config);
         $logger = new class ()
         {
-            function __call($name, $args)
+            public function __call($name, $args)
             {
             }
         };
@@ -503,7 +543,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      * ログファイルが見つからない場合、新規作成できること
      * @test
      */
-    public function okLoggerNewLogFile()
+    public function okLoggerNewLogFile(): void
     {
         $file = new File("/tmp/webstream.logtest.new.log");
         $file->delete();

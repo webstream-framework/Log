@@ -2,6 +2,9 @@
 
 namespace WebStream\Log;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerTrait;
+
 /**
  * LoggerAdapterクラス
  * PSR-3実装のロガーをWebStreamロガーに委譲
@@ -9,19 +12,20 @@ namespace WebStream\Log;
  * @since 2015/12/03
  * @version 0.7
  */
-class LoggerAdapter implements \Psr\Log\LoggerInterface
+class LoggerAdapter implements LoggerInterface
 {
-    use \Psr\Log\LoggerTrait;
+    use LoggerTrait;
 
     /**
      * @var Logger ロガーインスタンス
      */
-    private $logger;
+    private Logger $logger;
 
     /**
      * コンストラクタ
+     * @param Logger $logger ロガー
      */
-    public function __construct(\WebStream\Log\Logger $logger)
+    public function __construct(Logger $logger)
     {
         $this->logger = $logger;
     }
@@ -31,7 +35,7 @@ class LoggerAdapter implements \Psr\Log\LoggerInterface
      * @param string $name ログレベル
      * @param array $arguments 引数
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         $message = null;
         if (array_key_exists(0, $arguments)) {
@@ -47,11 +51,11 @@ class LoggerAdapter implements \Psr\Log\LoggerInterface
 
     /**
      * Logs with an arbitrary level.
-     * @param int $level ログレベル
-     * @param string $message メッセージ
+     * @param mixed $level ログレベル
+     * @param mixed $message メッセージ
      * @param array $context 埋め込み値リスト
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         $this->logger->write($level, $message, $context);
     }

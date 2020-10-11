@@ -10,7 +10,7 @@ namespace WebStream\Log\Test\Providers;
  */
 trait LoggerProvider
 {
-    public function loggerAdapterProvider()
+    public function loggerAdapterProvider(): array
     {
         return [
             ["debug"],
@@ -26,7 +26,7 @@ trait LoggerProvider
         ];
     }
 
-    public function loggerAdapterWithPlaceholderProvider()
+    public function loggerAdapterWithPlaceholderProvider(): array
     {
         return [
             ["debug", "log message for debug.", "log message for { level }.", ["level" => "debug"]],
@@ -36,7 +36,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelDebugProvider()
+    public function logLevelDebugProvider(): array
     {
         return [
             ["debug", true],
@@ -52,7 +52,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelInfoProvider()
+    public function logLevelInfoProvider(): array
     {
         return [
             ["debug", false],
@@ -68,7 +68,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelNoticeProvider()
+    public function logLevelNoticeProvider(): array
     {
         return [
             ["debug", false],
@@ -84,7 +84,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelWarnProvider()
+    public function logLevelWarnProvider(): array
     {
         return [
             ["debug", false],
@@ -100,7 +100,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelWarningProvider()
+    public function logLevelWarningProvider(): array
     {
         return [
             ["debug", false],
@@ -116,7 +116,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelErrorProvider()
+    public function logLevelErrorProvider(): array
     {
         return [
             ["debug", false],
@@ -132,7 +132,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelCriticalProvider()
+    public function logLevelCriticalProvider(): array
     {
         return [
             ["debug", false],
@@ -148,7 +148,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelAlertProvider()
+    public function logLevelAlertProvider(): array
     {
         return [
             ["debug", false],
@@ -164,7 +164,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelEmergencyProvider()
+    public function logLevelEmergencyProvider(): array
     {
         return [
             ["debug", false],
@@ -180,7 +180,7 @@ trait LoggerProvider
         ];
     }
 
-    public function logLevelFatalProvider()
+    public function logLevelFatalProvider(): array
     {
         return [
             ["debug", false],
@@ -196,7 +196,7 @@ trait LoggerProvider
         ];
     }
 
-    public function loggerFormatterProvider()
+    public function loggerFormatterProvider(): array
     {
         return [
             ["log.test3_1.ini", "message", "message"],
@@ -208,7 +208,7 @@ trait LoggerProvider
         ];
     }
 
-    public function loggerFormatterDateTimeProvider()
+    public function loggerFormatterDateTimeProvider(): array
     {
         return [
             ["log.test4_1.ini", "/(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2})/", "message", "message"],
@@ -218,7 +218,7 @@ trait LoggerProvider
         ];
     }
 
-    public function writeTimingProvider()
+    public function writeTimingProvider(): array
     {
         return [
             [true, "b", "a", "a", "a" . PHP_EOL . "b" . PHP_EOL . "a" . PHP_EOL],
@@ -226,7 +226,7 @@ trait LoggerProvider
         ];
     }
 
-    public function unRotateByCycleProvider()
+    public function unRotateByCycleProvider(): array
     {
         $day_of_year = 24 * 365;
         $year = date("Y");
@@ -244,7 +244,7 @@ trait LoggerProvider
         ];
     }
 
-    public function rotateByCycleProvider()
+    public function rotateByCycleProvider(): array
     {
         $day_of_month = intval(date("t", time()));
         $day_of_year = 24 * 365;
