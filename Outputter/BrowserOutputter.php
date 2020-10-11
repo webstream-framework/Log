@@ -29,11 +29,11 @@ class BrowserOutputter implements IOutputter
     /**
      * {@inheritdoc}
      */
-    public function write($text)
+    public function write(string $message)
     {
         $sapi = php_sapi_name();
         if (array_key_exists($sapi, $this->sapis) && $this->sapis[$sapi] === 'http') {
-            echo $text . "<br>";
+            echo $message . "<br>";
         }
     }
 }

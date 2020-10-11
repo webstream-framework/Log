@@ -29,20 +29,21 @@ class ConsoleOutputter implements IOutputter, ILazyWriter
     /**
      * @var array<string> ログメッセージリスト
      */
-    private $logMessages;
+    private array $logMessages;
 
     /**
      * @var int バッファリングサイズ
      */
-    private $bufferSize;
+    private int $bufferSize;
 
     /**
      * @var bool 遅延書き出しフラグ
      */
-    private $isLazyWrite;
+    private bool $isLazyWrite;
 
     /**
      * constructor
+     * @param int $bufferSize
      */
     public function __construct($bufferSize = 1000)
     {
@@ -79,7 +80,7 @@ class ConsoleOutputter implements IOutputter, ILazyWriter
     /**
      * {@inheritdoc}
      */
-    public function write($message)
+    public function write(string $message)
     {
         if ($this->isLazyWrite) {
             if (count($this->logMessages) >= $this->bufferSize) {
@@ -115,7 +116,7 @@ class ConsoleOutputter implements IOutputter, ILazyWriter
      * ログファイルに書き出す
      * @param string $message ログメッセージ
      */
-    private function writeLog($message)
+    private function writeLog(string $message)
     {
         $sapi = php_sapi_name();
         if (array_key_exists($sapi, $this->sapis) && $this->sapis[$sapi] === 'console') {

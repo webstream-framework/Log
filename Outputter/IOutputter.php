@@ -14,5 +14,5 @@ interface IOutputter
      * ログを出力する
      * @param string $message ログメッセージ
      */
-    public function write($message);
+    public function write(string $message);
 }
