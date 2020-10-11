@@ -2,11 +2,10 @@
 
 namespace WebStream\Log;
 
-use WebStream\IO\File;
-use WebStream\IO\Writer\SimpleFileWriter;
 use WebStream\Container\Container;
 use WebStream\Exception\Extend\LoggerException;
-use WebStream\Log\LoggerUtils;
+use WebStream\IO\File;
+use WebStream\IO\Writer\SimpleFileWriter;
 
 /**
  * LoggerConfigurationManager
@@ -21,12 +20,12 @@ class LoggerConfigurationManager
     /**
      * @var Container ログ設定コンテナ
      */
-    private $logContainer;
+    private Container $logContainer;
 
     /**
      * @var Container IOコンテナ
      */
-    private $ioContainer;
+    private Container $ioContainer;
 
     /**
      * @var array<string> ログ設定情報

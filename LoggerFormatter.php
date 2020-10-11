@@ -18,11 +18,11 @@ class LoggerFormatter
     /**
      * @var Container ログ設定コンテナ
      */
-    private $logConfig;
+    private Container $logConfig;
 
     /**
      * コンストラクタ
-     * @param string 設定ファイルパス
+     * @param Container $logConfig
      */
     public function __construct(Container $logConfig)
     {
@@ -71,7 +71,7 @@ class LoggerFormatter
         // アプリケーション名
         if ($applicationName !== null && preg_match('/%([0-9]{0,})c/', $this->logConfig->format, $matches)) {
             $applicationName = $matches[1] !== null ? str_pad($applicationName, intval($matches[1]), ' ') : $applicationName;
-            $message = preg_replace('/%(?:[0-9]{0,})c/', $applicationName, $message);
+            $message = preg_replace('/%(?:[0-9]*)c/', $applicationName, $message);
         }
 
         return $message;
@@ -85,7 +85,7 @@ class LoggerFormatter
     private function compileDateTime($message)
     {
         if (preg_match('/%([0-9]{0,})d(?:\{(.+?)\}){1}/', $message, $formatMatches)) {
-            $message = preg_replace('/%[0-9]{0,}d/', '%d', $message);
+            $message = preg_replace('/%[0-9]*d/', '%d', $message);
             $now = microtime(true);
             $decimal = "000";
             if (preg_match('/^[0-9]*\\.([0-9]+)$/', $now, $matches) === 1) {
@@ -95,8 +95,8 @@ class LoggerFormatter
             $dateTime = strftime($dateTimeFormat, $now);
             $dateTime = empty($formatMatches[1]) ? $dateTime : str_pad($dateTime, $formatMatches[1], ' ');
             $message = preg_replace('/%d\{.+?\}/', $dateTime, $message);
-        } elseif (preg_match('/%([0-9]{0,})d/', $message, $formatMatches)) {
-            $message = preg_replace('/%[0-9]{0,}d/', '%d', $message);
+        } elseif (preg_match('/%([0-9]*)d/', $message, $formatMatches)) {
+            $message = preg_replace('/%[0-9]*d/', '%d', $message);
             $dateTime = strftime($this->defaultDateTimeFormatter());
             $dateTime = empty($formatMatches[1]) ? $dateTime : str_pad($dateTime, $formatMatches[1], ' ');
             $message = preg_replace('/%d/', $dateTime, $message);
@@ -114,13 +114,13 @@ class LoggerFormatter
     private function compileLogLevel($message, $logLevel)
     {
         // ログレベル
-        if (preg_match('/%([0-9]{0,})L/', $message, $matches)) {
+        if (preg_match('/%([0-9]*)L/', $message, $matches)) {
             $upperLevel = strtoupper(empty($matches[1]) ? $logLevel : str_pad($logLevel, $matches[1], ' '));
-            $message = preg_replace('/%([0-9]{0,})L/', $upperLevel, $message);
+            $message = preg_replace('/%([0-9]*)L/', $upperLevel, $message);
         }
-        if (preg_match('/%([0-9]{0,})l/', $message, $matches)) {
+        if (preg_match('/%([0-9]*)l/', $message, $matches)) {
             $lowerLevel = empty($matches[1]) ? $logLevel : str_pad($logLevel, $matches[1], ' ');
-            $message = preg_replace('/%([0-9]{0,})l/', $lowerLevel, $message);
+            $message = preg_replace('/%([0-9]*)l/', $lowerLevel, $message);
         }
 
         return $message;
